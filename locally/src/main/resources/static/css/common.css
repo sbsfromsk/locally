@@ -1,0 +1,32 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background: white;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.container {
+	width: 390px;
+	margin: 0 auto;
+	min-height: 100vh;
+	background: white;
+	display: flex;
+	flex-direction: column;
+}
+
+header, footer {
+	padding: 16px;
+	background-color: coral;
+	color: white;
+	text-align: center;
+}
+
+main {
+	flex: 1;
+	padding: 16px;
+	overflow-y: auto;
+}
