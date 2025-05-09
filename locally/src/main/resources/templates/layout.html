@@ -2,6 +2,12 @@
 <html lang="ko">
 	<head th:replace="~{fragments/head :: headFragment}"></head>
 	<body>
-		dd
+		<div class="container">
+			<header th:replace="~{fragments/header :: headerFragment}"></header>
+			<main>
+				<th:block layout:fragment="content"></th:block>
+			</main>
+			<footer th:replace="~{fragments/footer :: footerFragment}"></footer>
+		</div>
 	</body>
 </html>

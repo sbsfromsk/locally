@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PostController {
 
-	@GetMapping("/layout")
+	@GetMapping("/post")
 	public String Create() {
-		return "layout";
+		return "/post/postCreate";
 	}
 }
