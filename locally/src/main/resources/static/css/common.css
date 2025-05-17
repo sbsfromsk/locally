@@ -53,17 +53,26 @@ footer {
 }
 
 main {
-	padding: 60px 20px; /* header, footer, main 같이 조정 */
+	padding: 60px 10px; /* header, footer, main 같이 조정 */
 	min-height: calc(100vh - 120px); /* header, footer, main 같이 조정 */
 	display: flex;
 	flex: 1;
 	flex-direction: column;
 	background: white;
 	overflow-y: auto;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: start;
 }
 
+.content {
+	width: 100%;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+/*
 .row {
 	display: flex;
 	flex-wrap: wrap;
@@ -125,3 +134,4 @@ main {
 .col-12 {
 	width: 100%;
 }
+*/

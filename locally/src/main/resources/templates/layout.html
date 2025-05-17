@@ -5,9 +5,11 @@
 		<div class="container">
 			<header th:replace="~{fragments/header :: headerFragment}"></header>
 			<main>
-				<th:block layout:fragment="content"></th:block>
+				<th:block layout:fragment="content" class="content"></th:block>
 			</main>
 			<footer th:replace="~{fragments/footer :: footerFragment}"></footer>
+			
+			<th:block layout:fragment="script"></th:block>
 		</div>
 	</body>
 </html>

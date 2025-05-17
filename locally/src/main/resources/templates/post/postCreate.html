@@ -1,26 +1,20 @@
 <html layout:decorate="~{layout}">
 		<div layout:fragment="content">
-			<style>
-				.row {
-					padding-left: 32px;
-					padding-right: 32px;
-					margin-top: 20px;
-				}
-				
-				.col-12 {
-					width: 100vw;
-					
-
-					border: 1px solid black;
-				}
-				
-
-			</style>
+			<link rel="stylesheet" type="text/css" th:href="@{/css/post.css}">
 			
-			<div class="row addPictures">
-				<div class="col col-12 addBtn">
-					<div class="addPictures">사진을 추가하세요.</div>
+			<form enctype="multipart/form-data">
+				<div class="uploadArea" id="uploadArea">
+						<div class="addText">사진을 추가하세요.</div>
+						<input type="file" id="fileInput" name="fileInput" accept="image/jpeg, image/png, image/gif" style="display:none;" multiple/>
 				</div>
-			</div>
+				
+				<div class="previewArea" id="previewArea" style="display: none;">
+					<div class="imageBlock" id="imageBlock"></div>
+					<div class="titleInput"></div>
+					<div class="submitBtn"></div>
+				</div>
+			</form>
 		</div>
+		
+		<script layout:fragment="script" type='text/javascript' src="js/post.js"></script>
 </html>

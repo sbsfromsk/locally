@@ -1,0 +1,74 @@
+.uploadArea {
+	position: fixed;
+	top: 80px;
+	bottom: 80px;
+	
+	left: 20px;
+	right: 20px;
+	border: 3px dashed coral;
+	border-radius: 10px;
+	
+	/*  
+		main에서 display:flex 적어도
+		.uploadArea의 postion: fixed여서 레이아웃에 영향을 끼침(?)
+		.uploadArea 내부에서 다시 flex로 해야, 내부 요소가 다시 정리...
+	
+	*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.uploadArea:hover {
+	cursor: pointer;
+}
+
+.uploadArea:hover .addText {
+	padding: 10px;
+	border: 1px solid lightgray;
+	border-radius: 20px;
+	background-color: lightgray;
+	
+}
+
+/* ------------------------------- */
+
+.addText {
+	color: coral;
+	font-size: 24px;
+}
+
+/* ------------------------------- */
+.previewArea { 
+	display: flex;
+	width: 100%;
+}
+
+
+.imageBlock {
+	/*flex: 5;*/
+	display: flex;
+	justify-content: flex-start;
+	/*flex-wrap: nowrap;*/
+	/*gap: 10px;*/
+	
+	
+	/* 드래그 */
+
+
+	overflow-x: auto;
+	user-select: none;
+	cursor: grab;
+	scroll-behavior: smooth;
+}
+
+.imageBlock:active {
+	cursor: grabbing;
+}
+
+.preview-img {
+	width: 225px;
+	margin: 10px;
+	border-radius: 10px;
+}
+
