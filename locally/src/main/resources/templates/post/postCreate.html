@@ -2,16 +2,21 @@
 		<div layout:fragment="content">
 			<link rel="stylesheet" type="text/css" th:href="@{/css/post.css}">
 			
-			<form enctype="multipart/form-data">
+			<form th:action="@{/post}" method="post" enctype="multipart/form-data">
 				<div class="uploadArea" id="uploadArea">
 						<div class="addText">사진을 추가하세요.</div>
-						<input type="file" id="fileInput" name="fileInput" accept="image/jpeg, image/png, image/gif" style="display:none;" multiple/>
+						<input type="file" id="fileInput" name="files" accept="image/jpeg, image/png, image/gif" style="display:none;" multiple/>
 				</div>
 				
 				<div class="previewArea" id="previewArea" style="display: none;">
 					<div class="imageBlock" id="imageBlock"></div>
-					<div class="titleInput"></div>
-					<div class="submitBtn"></div>
+					<div class="title-group">
+						<p class="form-label">제목</p>
+						<input class="form-input title-input" name="title" type="text" />
+					</div>
+					<div class="submitBtn">
+						<button type="submit">제출</button>
+					</div>
 				</div>
 			</form>
 		</div>
