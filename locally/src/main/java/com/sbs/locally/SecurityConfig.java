@@ -17,7 +17,10 @@ public class SecurityConfig {
 			.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
 				.requestMatchers(new AntPathRequestMatcher("/**"))
 				.permitAll()
-				.anyRequest().authenticated());
+				.anyRequest().authenticated())
+			.csrf((csrf) -> csrf
+					.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
+			;
 		
 		return http.build();
 	}

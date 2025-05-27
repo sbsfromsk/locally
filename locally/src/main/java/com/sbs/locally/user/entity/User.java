@@ -1,47 +1,45 @@
-package com.sbs.locally.post.entity;
+package com.sbs.locally.user.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.sbs.locally.post.enums.PostStatus;
+import com.sbs.locally.user.enums.UserRole;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-public class Post {
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private long id;
+
+	@Column(unique=true)
+	private String nickname;
 	
-	private String title;
+	private String profileImage;
 	
-	private String content;
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
 	
-	private String author;
+	private String provider;
+	
+	private String providerId;
 	
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	
+	@CreationTimestamp
 	private LocalDateTime updatedAt;
-	
-	//private List<PostImage> images = new ArrayList<>();
-	
-	// private Long viewCount = 0L;
-	
-	@Enumerated(EnumType.STRING)
-	private PostStatus status;
 }
