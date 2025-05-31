@@ -1,10 +1,11 @@
-package com.sbs.locally.user.entity;
+package com.sbs.locally.member.entity;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import com.sbs.locally.user.enums.UserRole;
+import com.sbs.locally.member.enums.MemberRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,19 +20,24 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class User {
+public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Integer id;
 
+	@Column(unique=true, nullable = false)
+	private String email;
+	
+	private String password;
+	
 	@Column(unique=true)
 	private String nickname;
 	
 	private String profileImage;
 	
 	@Enumerated(EnumType.STRING)
-	private UserRole role;
+	private MemberRole role;
 	
 	private String provider;
 	
@@ -40,6 +46,6 @@ public class User {
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	
-	@CreationTimestamp
+	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 }
