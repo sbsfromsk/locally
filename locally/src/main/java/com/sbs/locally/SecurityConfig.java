@@ -18,7 +18,7 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers("/", "/login", "/member/signup", "/css/**", "/js/**", "/images/**").permitAll()
+				.requestMatchers("/", "/login", "/member/signup", "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll()
 				.anyRequest().authenticated())
 			.csrf((csrf) -> csrf
 					.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))

@@ -1,11 +1,14 @@
 package com.sbs.locally.member.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sbs.locally.member.entity.Member;
+import com.sbs.locally.member.exception.DuplicateEmailException;
+import com.sbs.locally.member.exception.DuplicateNickNameException;
 import com.sbs.locally.member.forms.SignupForm;
 import com.sbs.locally.member.repository.MemberRepository;
 
@@ -38,25 +41,42 @@ public class MemberService {
 		// 1. 다시 한번 중복 검증
 		validateDuplicate(form);
 		
+		
+		// 2. 비밀번호 암호화
 		String encodedPassword = passwordEncoder.encode(form.getPassword1());
 		
+		// 3. 회원 객체 생성
 		Member member = Member.builder()
 						.email(form.getEmail())
 						.password(encodedPassword)
 						.nickname(form.getNickname())
 						.build();
 		
-		memberRepository.save(member);
+		Member member2 = Member.builder().email("sngj20@gmail.com")
+				.password(encodedPassword)
+				.nickname("7")
+				.build();
 		
+		//4. 저장
+		try {
+		memberRepository.save(member);
+		} catch (DataIntegrityViolationException e) {
+			if (e.getMessage().contains("email")) {
+				throw new DuplicateEmailException("DB 이미 사용중인 이메일입니다.");
+			} else if (e.getMessage().contains("nickname")) {
+				throw new DuplicateNickNameException("DB 이미 존재하는 닉네임입니다.");
+			}
+			throw e;
+		}
 	}
 
 	private void validateDuplicate(SignupForm form) {
 		if (existsByEmail(form.getEmail())) {
-			throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+			throw new DuplicateEmailException("이미 사용중인 이메일입니다.");
 		}
 		
 		if (existsByNickname(form.getNickname())) {
-			throw new IllegalArgumentException("이미 사용중인 닉네임입니다.");
+			throw new DuplicateNickNameException("이미 사용중인 닉네임입니다.");
 		}
 		
 	}
