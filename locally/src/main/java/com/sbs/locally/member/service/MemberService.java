@@ -52,11 +52,6 @@ public class MemberService {
 						.nickname(form.getNickname())
 						.build();
 		
-		Member member2 = Member.builder().email("sngj20@gmail.com")
-				.password(encodedPassword)
-				.nickname("7")
-				.build();
-		
 		//4. 저장
 		try {
 		memberRepository.save(member);
