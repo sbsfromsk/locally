@@ -3,14 +3,26 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/css/member/signup.css}"></link>
 		<form th:action="@{/member/signup}" th:object="${signupForm}" method="post" id="signupForm">
 			<div th:replace="~{fragments/form_errors :: formErrorsFragment}"></div>
+			
 			<label for="email">이메일</label>
-			<input type="email" name="email" id="email">
+			<input type="email" th:field="*{email}">
+			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></div>
+			
 			<label for="password1">비밀번호</label>
-			<input type="password" name="password1" id="password1">
+			<input type="password" th:field="*{password1}">
+			<div th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}" style="color: red;"></div>
+			
+			
 			<label for="password2">비밀번호 확인</label>
-			<input type="password" name="password2" id="password2">
+			<input type="password" th:field="*{password2}">
+			<div th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}" style="color: red;"></div>
+			
+			
 			<label for="nickname">닉네임</label>
-			<input type="text" name="nickname" id="nickname">
+			<input type="text" th:field="*{nickname}">
+			<div th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" style="color: red;"></div>
+			
+			
 			<br>
 			<input type="submit" class="submitBtn" value="가입">
 		</form>

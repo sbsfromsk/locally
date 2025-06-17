@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sbs.locally.member.entity.Member;
+import com.sbs.locally.member.enums.MemberRole;
 import com.sbs.locally.member.exception.DuplicateEmailException;
 import com.sbs.locally.member.exception.DuplicateNickNameException;
 import com.sbs.locally.member.forms.SignupForm;
@@ -50,6 +51,7 @@ public class MemberService {
 						.email(form.getEmail())
 						.password(encodedPassword)
 						.nickname(form.getNickname())
+						.role(MemberRole.USER)
 						.build();
 		
 		//4. 저장
