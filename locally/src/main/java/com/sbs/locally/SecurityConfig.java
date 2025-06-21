@@ -2,6 +2,8 @@ package com.sbs.locally;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,9 +26,17 @@ public class SecurityConfig {
 					.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
 			.headers((headers) -> headers
 					.addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-			.formLogin((form) -> form.defaultSuccessUrl("/")
+			.formLogin((form) -> form
+					.usernameParameter("email")
+					.defaultSuccessUrl("/")
 					)
+			.logout((logout) -> logout
+					.logoutSuccessUrl("/")
+					.invalidateHttpSession(true))
 			;
+		/*
+		 * .formLogin((formLogin) -> formLogin.loginPage("/member/login").defaultSuccessUrl("/")
+		 * */
 		
 		return http.build();
 	}
@@ -34,5 +44,11 @@ public class SecurityConfig {
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		
+		return authenticationConfiguration.getAuthenticationManager();
 	}
 }
