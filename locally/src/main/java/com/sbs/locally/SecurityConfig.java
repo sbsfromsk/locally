@@ -20,23 +20,25 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers("/", "/login", "/member/signup", "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll()
+				.requestMatchers("/", "/member/login", "/member/signup", "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll()
 				.anyRequest().authenticated())
 			.csrf((csrf) -> csrf
 					.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
 			.headers((headers) -> headers
 					.addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-			.formLogin((form) -> form
+			.formLogin((formLogin) -> formLogin
+					.loginPage("/member/login")
 					.usernameParameter("email")
 					.defaultSuccessUrl("/")
+					.permitAll()
 					)
 			.logout((logout) -> logout
+					.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout", "POST"))
 					.logoutSuccessUrl("/")
-					.invalidateHttpSession(true))
+					.invalidateHttpSession(true)
+					.permitAll()
+					)
 			;
-		/*
-		 * .formLogin((formLogin) -> formLogin.loginPage("/member/login").defaultSuccessUrl("/")
-		 * */
 		
 		return http.build();
 	}

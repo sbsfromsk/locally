@@ -1,10 +1,12 @@
 <html layout:decorate="~{layout}">
 	<div layout:fragment="content">
-		<a sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+		<a sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
 		<br/>
 		<a sec:authorize="isAnonymous()" th:href="@{/member/signup}">회원가입</a>
 		
+		<form sec:authorize="isAuthenticated" th:action="@{/member/logout}" method="post">
+			<input type="submit" value="로그아웃">
+		</form>
 		
-		<a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
 	</div>
 </html>

@@ -27,6 +27,7 @@ public class MemberController {
 
 	private final MemberService memberService;
 
+	/* ↓↓↓ 회원가입 관련 ↓↓↓ */
 	@GetMapping("/signup")
 	public String signup(SignupForm signupForm) {
 
@@ -89,4 +90,14 @@ public class MemberController {
 
 		return "redirect:/";
 	}
+	
+	/* ↑↑↑ 회원가입 관련 ↑↑↑ */
+	
+	/* ↓↓↓ 로그인 관련 ↓↓↓ */
+	@GetMapping("/login")
+	public String login() {
+		
+		return "/member/login";
+	}
+	/* ↑↑↑ 로그인 관련 ↑↑↑ */
 }
