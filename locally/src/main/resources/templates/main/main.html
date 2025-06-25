@@ -4,7 +4,7 @@
 		<br/>
 		<a sec:authorize="isAnonymous()" th:href="@{/member/signup}">회원가입</a>
 		
-		<form sec:authorize="isAuthenticated" th:action="@{/member/logout}" method="post">
+		<form sec:authorize="isAuthenticated" th:action="@{/auth/logout}" method="post">
 			<input type="submit" value="로그아웃">
 		</form>
 		

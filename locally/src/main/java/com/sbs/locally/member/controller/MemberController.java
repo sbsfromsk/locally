@@ -92,12 +92,5 @@ public class MemberController {
 	}
 	
 	/* ↑↑↑ 회원가입 관련 ↑↑↑ */
-	
-	/* ↓↓↓ 로그인 관련 ↓↓↓ */
-	@GetMapping("/login")
-	public String login() {
-		
-		return "/member/login";
-	}
-	/* ↑↑↑ 로그인 관련 ↑↑↑ */
+
 }

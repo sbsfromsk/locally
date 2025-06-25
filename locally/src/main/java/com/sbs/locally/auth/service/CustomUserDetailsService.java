@@ -1,4 +1,4 @@
-package com.sbs.locally.member.service;
+package com.sbs.locally.auth.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Member member = this.memberRepository.findByEmail(email)
-				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다.")); // /auth/login?error 리다이렉트! 
 		
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		
