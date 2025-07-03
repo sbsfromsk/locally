@@ -3,6 +3,8 @@
 	<!-- META -->
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta id="_csrf" name="_csrf" th:value="${_csrf.token}">
+			<meta id="_csrf_header" name="_csrf_header" th:value="${_csrf.headerName}">
 			<title>Locally</title>
 			<!-- CSS -->
 			<link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
