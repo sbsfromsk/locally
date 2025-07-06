@@ -29,7 +29,7 @@ public class AuthController {
 	/* ↓↓↓ 비밀번호 찾기 관련 ↓↓↓ */
 	@GetMapping("/findPassword")
 	public String findPassword() {
-		log.info("꾺꾺이");
+		log.info("ㅇㅇ");
 		return "/auth/findPassword";
 	}
 	/* ↑↑↑ 비밀번호 찾기 관련 ↑↑↑ */
