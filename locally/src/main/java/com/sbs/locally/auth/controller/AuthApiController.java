@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbs.locally.auth.forms.EmailRequestForm;
+import com.sbs.locally.auth.forms.ResetPasswordForm;
 import com.sbs.locally.auth.service.AuthService;
 import com.sbs.locally.email.service.EmailService;
 
@@ -28,7 +29,7 @@ public class AuthApiController {
 
 	private final AuthService authService;
 
-	@PostMapping("/password")
+	@PostMapping("/findPassword")
 	public ResponseEntity<?> findPassword(@Valid @RequestBody EmailRequestForm email, BindingResult bindingResult)
 			throws MessagingException {
 
@@ -47,9 +48,36 @@ public class AuthApiController {
 		authService.sendResetPasswordEmail(email.getEmail());
 
 		long end = System.currentTimeMillis();
-		
-		log.info("전체 처리 시간: {} ms", (end- start));
-		
+
+		log.info("전체 처리 시간: {} ms", (end - start));
+
+		return ResponseEntity.noContent().build();
+	}
+
+	// TODO: 이제 Service로 가서 비밀번호 변경하기!
+	@PostMapping("/resetPassword")
+	public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordForm form, BindingResult bindingResult) {
+
+		log.info("비밀번호 변경 중...");
+		log.info("password: {}, {}", form.getPassword1(), form.getPassword2());
+
+		if (!form.getPassword1().equals(form.getPassword2())) {
+
+			log.info("여기 진행중!");
+
+			bindingResult.rejectValue("password1", "NotEqual", "비밀번호가 일치하지 않습니다.");
+
+		}	
+	
+		if (bindingResult.hasErrors()) {
+			List<String> errors = bindingResult.getFieldErrors().stream().map(error -> error.getDefaultMessage())
+					.peek(errorMsg -> log.info("{}", errorMsg)).toList();
+
+			return ResponseEntity.badRequest().body(errors);
+		}
+
+
+
 		return ResponseEntity.noContent().build();
 	}
 }

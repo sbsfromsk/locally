@@ -4,7 +4,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,6 +16,7 @@ import com.sbs.locally.auth.service.AuthService;
 import com.sbs.locally.common.entity.VerificationToken;
 import com.sbs.locally.common.service.TokenService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +45,7 @@ public class AuthController {
 	}
 	/* ↑↑↑ 비밀번호 찾기 관련 ↑↑↑ */
 
-	@GetMapping("resetPassword")
+	@GetMapping("/resetPassword")
 	public String resetPassword(@RequestParam("token") String token, Model model, ResetPasswordForm resetPasswordForm) {
 
 		log.info("토큰: {}", token);

@@ -20,7 +20,7 @@ const sendEmail = (email) => {
 	let token = document.getElementById("_csrf").getAttribute("value");
 	let header = document.getElementById("_csrf_header").getAttribute("value");
 
-	fetch('/api/auth/password', {
+	fetch('/api/auth/findPassword', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

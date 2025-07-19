@@ -1,5 +1,7 @@
 package com.sbs.locally.auth.forms;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +9,11 @@ import lombok.Setter;
 @Setter
 public class ResetPasswordForm {
 
+	@NotBlank(message = "비밀번호를 입력해주세요.")
+	@Size(min = 8, max = 20, message="비밀번호는 8자 이상, 20자 이하입니다.")
 	private String password1;
+
+	@NotBlank(message = "비밀번호를 입력해주세요.")
+	@Size(min = 8, max = 20, message="비밀번호는 8자 이상, 20자 이하입니다.")
 	private String password2;
 }
