@@ -60,5 +60,11 @@ public class AuthController {
 		// formDTO 만들기
 		return "/auth/resetPassword";
 	}
+	
+	@GetMapping("/invalidToken")
+	public String invalidToken() {
+		
+		return "/auth/invalid-token";
+	}
 
 }

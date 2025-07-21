@@ -20,8 +20,9 @@ function validPassword(formData) {
 }
 
 const resetPasswordForm = document.querySelector("#resetPasswordForm");
+const passwordToken = new URLSearchParams(window.location.search).get("token");
 
-
+console.log("token 값: ", passwordToken);
 /*
 	1. 자바스크립트에서 1차 검증
 	2. 서버 전달
@@ -34,7 +35,8 @@ resetPasswordForm.addEventListener("submit", function(e) {
 
 	const formData = {
 		password1: resetPasswordForm.password1.value?.trim() || '',
-		password2: resetPasswordForm.password2.value?.trim() || ''
+		password2: resetPasswordForm.password2.value?.trim() || '',
+		passwordToken: passwordToken
 	}
 
 	console.log(formData);
@@ -44,38 +46,42 @@ resetPasswordForm.addEventListener("submit", function(e) {
 
 		return;
 	}
-	
-	let token  = document.getElementById("_csrf").getAttribute("value");
+
+	let token = document.getElementById("_csrf").getAttribute("value");
 	let header = document.getElementById("_csrf_header").getAttribute("value");
-	
+
 	fetch('/api/auth/resetPassword', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			[header]: token
 		},
-		body: JSON.stringify({password1 : "", password2: ""}) // 수정
+		body: JSON.stringify(formData)
 	})
 		.then((response) => {
+			
+			// 상태코드 200 ~ 299가 아닌 경우
 			if (!response.ok) {
 				return response.json().then(errorData => {
-
-					const msg = Array.isArray(errorData) ? errorData[0] : errorData.message;
 					console.error("서버 에러 메세지:", errorData);
-					throw new Error(msg);
-
+					throw errorData; // new Error 객체를 만들었을 경우...
 
 				});
-			} else {
+			} else { // OK
 				alert("비밀번호가 변경되었습니다!");
-				
-				location.href="/";
+
+				location.href = "/";
 			}
 
 
 		})
 		.catch(error => {
-			alert("메일 발송해 실패했습니다: " + error.message);
+			if (error.error === "invalid_token") { // error.message로 받아야 함!
+				console.log("유효기간이 지났습니다");
+				location.href = "/auth/invalidToken";
+			} else {
+				alert("메일 발송에 실패했습니다: " + (error.message || JSON.stringify(error)));
+			}
 		})
 });
 
