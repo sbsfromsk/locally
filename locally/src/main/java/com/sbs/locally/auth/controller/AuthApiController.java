@@ -62,19 +62,18 @@ public class AuthApiController {
 
 		log.info("비밀번호 변경 중...");
 		log.info("password: {}, {}", form.getPassword1(), form.getPassword2());
-		
+
 		// 1. 토큰 검증
 		Boolean isValid = tokenService.isValidToken(form.getPasswordToken());
 		log.info("토큰 {}, 유효 여부: {}", form.getPasswordToken(), isValid);
-		
+
 		// 2. 토큰 유효하지 않는다면...?
 		// invalid-token으로 이동해야 함.
 		if (!isValid) {
 			log.info("유효 시간 지남!");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "invalid_token"));
 		}
-		
-		
+
 		// 3. 비밀번호 검증
 		if (!form.getPassword1().equals(form.getPassword2())) {
 
@@ -90,11 +89,9 @@ public class AuthApiController {
 
 			return ResponseEntity.badRequest().body(errors);
 		}
-		
+
 		// 4. 비밀번호 변경 시작
-		
-		
-		
+		authService.resetPassword(form.getPasswordToken(), form.getPassword1());
 
 		return ResponseEntity.noContent().build();
 	}

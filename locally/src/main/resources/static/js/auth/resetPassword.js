@@ -76,7 +76,7 @@ resetPasswordForm.addEventListener("submit", function(e) {
 
 		})
 		.catch(error => {
-			if (error.error === "invalid_token") { // error.message로 받아야 함!
+			if (error.error === "invalid_token") {
 				console.log("유효기간이 지났습니다");
 				location.href = "/auth/invalidToken";
 			} else {

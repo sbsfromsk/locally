@@ -7,8 +7,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.sbs.locally.auth.forms.ResetPasswordForm;
 import com.sbs.locally.common.entity.VerificationToken;
 import com.sbs.locally.common.enums.TokenType;
+import com.sbs.locally.common.exception.InvalidTokenException;
 import com.sbs.locally.common.service.TokenService;
 import com.sbs.locally.email.service.EmailService;
 import com.sbs.locally.member.entity.Member;
@@ -17,6 +19,7 @@ import com.sbs.locally.member.service.MemberService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,5 +60,19 @@ public class AuthService {
 			emailService.sendVerificationEmail(toMember, token);
 		}
 
+	}
+	
+	/**
+	 * 비밀번호 설정
+	 * 1. 토큰 유효 (TokenService)
+	 * 2. 회원 찾기 (MemeberService)
+	 * 3. 회원 비밀번호 바꾸기 (MemberService)
+	 * 4. 토큰 만료!(uesdDate, used 체크)
+	 * */
+	public void resetPassword(String passwordToken, String password) {
+		
+		if(!tokenService.isValidToken(passwordToken)) {
+			throw new InvalidTokenException();
+		};
 	}
 }

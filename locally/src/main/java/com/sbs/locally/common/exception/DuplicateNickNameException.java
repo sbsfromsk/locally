@@ -1,4 +1,4 @@
-package com.sbs.locally.member.exception;
+package com.sbs.locally.common.exception;
 
 public class DuplicateNickNameException extends RuntimeException {
 

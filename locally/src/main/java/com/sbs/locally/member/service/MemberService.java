@@ -6,10 +6,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sbs.locally.common.exception.DuplicateEmailException;
+import com.sbs.locally.common.exception.DuplicateNickNameException;
 import com.sbs.locally.member.entity.Member;
 import com.sbs.locally.member.enums.MemberRole;
-import com.sbs.locally.member.exception.DuplicateEmailException;
-import com.sbs.locally.member.exception.DuplicateNickNameException;
 import com.sbs.locally.member.forms.SignupForm;
 import com.sbs.locally.member.repository.MemberRepository;
 

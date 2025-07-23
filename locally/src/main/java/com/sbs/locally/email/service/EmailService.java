@@ -45,9 +45,10 @@ public class EmailService {
 			helper.setText(String.format(
 					"<b>Locally</b> 비밀번호 재설정 이메일입니다.. <br><br> 아래 버튼을 눌러 인증을 완료해주세요.<br><br> <a href=\"%s\">비밀번호 재설정하기</a><br>",
 					tokenUrl), true); // true -> HTML
-
+			log.info("여긴 도달할까?");
 			javaMailSender.send(message);
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error("메일 전송 중 오류 발생", e.getMessage());
 		}
 
