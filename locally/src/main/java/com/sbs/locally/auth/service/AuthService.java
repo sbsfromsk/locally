@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
 
 	private final EmailService emailService;
-	private final MemberService memberService;
 	private final TokenService tokenService;
 
 	private final MemberRepository memberRepository;
@@ -42,7 +41,7 @@ public class AuthService {
 
 	}
 
-	public void sendResetPasswordEmail(String email) throws MessagingException {
+	public void sendResetPasswordEmail(String email, TokenType type) throws MessagingException {
 		log.info("비밀번호 재설정 메일 보내는 중...");
 
 		// 1.사람 찾기
@@ -55,24 +54,40 @@ public class AuthService {
 
 		if (member.isPresent()) {
 			Member toMember = member.get();
-			VerificationToken token = tokenService.createToken(toMember, TokenType.RESET_PASSWORD);
+			VerificationToken token = tokenService.createToken(toMember, type);
 
-			emailService.sendVerificationEmail(toMember, token);
+			log.info("토큰: {}", type);
+			if (type == TokenType.RESET_PASSWORD) {
+				emailService.sendResetPasswordEmail(toMember, token);
+			} else {
+				emailService.sendSignUpEmail(toMember, token);
+			}
+
 		}
-
 	}
-	
+
 	/**
-	 * 비밀번호 설정
-	 * 1. 토큰 유효 (TokenService)
-	 * 2. 회원 찾기 (MemeberService)
-	 * 3. 회원 비밀번호 바꾸기 (MemberService)
-	 * 4. 토큰 만료!(uesdDate, used 체크)
-	 * */
+	 * 비밀번호 설정 1. 토큰 유효 (TokenService) 2. 회원 찾기 (MemeberService) 3. 회원 비밀번호 바꾸기
+	 * (MemberService) 4. 토큰 만료!(uesdDate, used 체크)
+	 * TODO
+	 */
 	public void resetPassword(String passwordToken, String password) {
-		
-		if(!tokenService.isValidToken(passwordToken)) {
+
+		if (!tokenService.isValidToken(passwordToken)) {
 			throw new InvalidTokenException();
-		};
+		}
+		;
+	}
+
+	/**
+	 * 1. Member 객체 enabled = True
+	 * 2. 토큰 만료!
+	 * */
+	public void activateMember(String token) {
+		
+		// 1. 토큰 유효 다시 한 번 확인
+		// 2. 토큰 enabled...
+		// 3. 토큰 만료하기
+		
 	}
 }

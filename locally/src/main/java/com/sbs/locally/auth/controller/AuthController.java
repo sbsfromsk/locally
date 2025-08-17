@@ -15,6 +15,7 @@ import com.sbs.locally.auth.forms.ResetPasswordForm;
 import com.sbs.locally.auth.service.AuthService;
 import com.sbs.locally.common.entity.VerificationToken;
 import com.sbs.locally.common.service.TokenService;
+import com.sbs.locally.member.service.MemberService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,30 @@ public class AuthController {
 		// html에서 폼 만들기
 		// formDTO 만들기
 		return "/auth/resetPassword";
+	}
+	
+	@GetMapping("/signUp")
+	public String signUp(@RequestParam("token") String token, Model model, ResetPasswordForm resetPasswordForm) {
+
+		log.info("토큰: {}", token);
+
+		Boolean validToken = tokenService.isValidToken(token);
+
+		if (!validToken) {
+
+			return "/auth/invalid-token";
+		}
+		
+		/*
+		 * 1. member 객체의 enabled=true
+		 * 2. Token 유효 끝내기
+		 * 
+		 * */
+		authService.activateMember(token);
+		
+		// html에서 폼 만들기
+		// formDTO 만들기
+		return "/auth/sign-up";
 	}
 	
 	@GetMapping("/invalidToken")

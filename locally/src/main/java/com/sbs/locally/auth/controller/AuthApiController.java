@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sbs.locally.auth.forms.EmailRequestForm;
 import com.sbs.locally.auth.forms.ResetPasswordForm;
 import com.sbs.locally.auth.service.AuthService;
+import com.sbs.locally.common.enums.TokenType;
 import com.sbs.locally.common.service.TokenService;
 import com.sbs.locally.email.service.EmailService;
 
@@ -48,7 +49,7 @@ public class AuthApiController {
 			return ResponseEntity.badRequest().body(errors);
 		}
 
-		authService.sendResetPasswordEmail(email.getEmail());
+		authService.sendResetPasswordEmail(email.getEmail(), TokenType.RESET_PASSWORD);
 
 		long end = System.currentTimeMillis();
 

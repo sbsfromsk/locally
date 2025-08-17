@@ -6,6 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sbs.locally.auth.service.AuthService;
+import com.sbs.locally.common.enums.TokenType;
 import com.sbs.locally.common.exception.DuplicateEmailException;
 import com.sbs.locally.common.exception.DuplicateNickNameException;
 import com.sbs.locally.member.entity.Member;
@@ -13,6 +15,7 @@ import com.sbs.locally.member.enums.MemberRole;
 import com.sbs.locally.member.forms.SignupForm;
 import com.sbs.locally.member.repository.MemberRepository;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ public class MemberService {
 
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final AuthService authService;
 	
 	public boolean existsByEmail(String email) {
 		
@@ -37,7 +41,7 @@ public class MemberService {
 	}
 	
 	@Transactional
-	public void signUp(SignupForm form) {
+	public void signUp(SignupForm form) throws MessagingException {
 		
 		// 1. 다시 한번 중복 검증
 		validateDuplicate(form);
@@ -52,6 +56,7 @@ public class MemberService {
 						.password(encodedPassword)
 						.nickname(form.getNickname())
 						.role(MemberRole.USER)
+						.enabled(false)
 						.build();
 		
 		//4. 저장
@@ -65,6 +70,9 @@ public class MemberService {
 			}
 			throw e;
 		}
+		
+		//5. 인증 이메일 전송
+		authService.sendResetPasswordEmail(member.getEmail(), TokenType.SIGN_UP);
 	}
 
 	private void validateDuplicate(SignupForm form) {

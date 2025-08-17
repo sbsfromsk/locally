@@ -49,6 +49,8 @@ public class Member {
 	
 	private String providerId;
 	
+	private Boolean enabled;
+	
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	

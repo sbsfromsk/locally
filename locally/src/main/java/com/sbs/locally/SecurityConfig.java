@@ -30,7 +30,7 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-				.requestMatchers("/", "/api/auth/**", "/auth/**", "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll()
+				.requestMatchers("/", "/api/auth/**", "/auth/**", "/css/**", "/js/**", "/images/**", "/h2-console/**", "/member/signup").permitAll()
 				.anyRequest().authenticated())
 			.csrf((csrf) -> csrf
 					.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))

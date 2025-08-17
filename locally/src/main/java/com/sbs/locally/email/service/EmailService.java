@@ -21,7 +21,7 @@ public class EmailService {
 	private final JavaMailSender javaMailSender;
 
 	@Async
-	public void sendVerificationEmail(Member member, VerificationToken token) {
+	public void sendResetPasswordEmail(Member member, VerificationToken token) {
 
 		try {
 			log.info("이메일 전송 중... 이메일: {}, 토큰: {}", member.getEmail(), token.getToken());
@@ -53,4 +53,39 @@ public class EmailService {
 		}
 
 	}
+
+	@Async
+	public void sendSignUpEmail(Member member, VerificationToken token) {
+
+		try {
+			log.info("이메일 전송 중... 이메일: {}, 토큰: {}", member.getEmail(), token.getToken());
+
+			MimeMessage message = javaMailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+			String tokenUrl = "http://localhost:8080/auth/signUp?token=" + token.getToken();
+
+			/*
+			 * String contentText = """ <b>Locally</b> 비밀번호 재설정 이메일입니다. <br><br> 아래 버튼을 눌러
+			 * 인증을 완료해주세요.<br><br> <a href="%s">비밀번호 재설정하기</a><br>
+			 * 
+			 * """;
+			 */
+			// log.info(contentText);
+
+			helper.setTo(member.getEmail());
+
+			helper.setSubject("Locally 회원가입");
+			helper.setText(String.format(
+					"<b>Locally</b> 안녕하세요. Locally입니다. <br><br> 아래 버튼을 눌러 인증을 완료해주세요.<br><br> <a href=\"%s\">비밀번호 재설정하기</a><br>",
+					tokenUrl), true); // true -> HTML
+			log.info("가입 이메일 전송 중");
+			javaMailSender.send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("메일 전송 중 오류 발생", e.getMessage());
+		}
+
+	}
+
 }

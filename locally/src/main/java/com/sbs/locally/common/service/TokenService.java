@@ -59,8 +59,10 @@ public class TokenService {
 
 		String uuid = UUID.randomUUID().toString();
 
+		LocalDateTime expiryDate = (tokenType == TokenType.RESET_PASSWORD) ? LocalDateTime.now().plusMinutes(30) : LocalDateTime.now().plusHours(24);
+		
 		VerificationToken token = VerificationToken.builder().type(tokenType).token(uuid).member(member)
-				.expiryDate(LocalDateTime.now().plusMinutes(30)).build();
+				.expiryDate(expiryDate).build();
 
 		tokenRepository.save(token);
 
