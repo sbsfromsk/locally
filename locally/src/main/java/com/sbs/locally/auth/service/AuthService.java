@@ -30,6 +30,7 @@ public class AuthService {
 
 	private final EmailService emailService;
 	private final TokenService tokenService;
+	// private final MemberService memberService;
 
 	private final MemberRepository memberRepository;
 
@@ -79,15 +80,5 @@ public class AuthService {
 		;
 	}
 
-	/**
-	 * 1. Member 객체 enabled = True
-	 * 2. 토큰 만료!
-	 * */
-	public void activateMember(String token) {
-		
-		// 1. 토큰 유효 다시 한 번 확인
-		// 2. 토큰 enabled...
-		// 3. 토큰 만료하기
-		
-	}
+
 }

@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.sbs.locally.common.entity.VerificationToken;
 import com.sbs.locally.common.enums.TokenType;
+import com.sbs.locally.common.exception.InvalidTokenException;
 import com.sbs.locally.common.repository.TokenRepository;
 import com.sbs.locally.member.entity.Member;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,10 +22,54 @@ import lombok.extern.slf4j.Slf4j;
 public class TokenService {
 
 	private final TokenRepository tokenRepository;
-	
+
+	/**
+	 * 토큰이 유효한지 아닌지 확인만 하는 메서드
+	 * 
+	 * @return boolean
+	 */
 	public boolean isValidToken(String token) {
-		
+
 		return tokenRepository.findByToken(token).map(t -> !t.isExpired()).orElse(false);
+	}
+
+	/***
+	 * 토큰 유효한지 확인 후, 유효하면 토큰을 가져오고, 없으면 InvalidTokenException() 예외를 던져서,
+	 * invalid-token 페이지로 이동...
+	 * 1. expiryDate의 시간 < 현재 시간: false
+	 * 2. used = true: false
+	 * 3. UsedAt is not null : false
+	 * @param String token
+	 * @return Toekn 객체
+	 */
+	public VerificationToken getTokenAndMember(String token) {
+
+		return tokenRepository.findByToken(token).map(t -> {
+			/*
+			if (t.isExpired() || t.getUsed() || t.getUsedAt() != null) {
+				throw new InvalidTokenException();
+			}
+			*/
+			
+			if (t.isExpired() || t.getUsed() || t.getUsedAt() != null) {
+				throw new InvalidTokenException();
+			}
+			return t;
+		}).orElseThrow(() -> new InvalidTokenException());
+
+	}
+	
+	/***
+	 * token 사용이 끝나면, 토큰 만료
+	 * used: true, usedAt: localDateTime.now()
+	 * @param token
+	 */
+	@Transactional
+	public void invalidToken(VerificationToken token) {
+		token.setUsed(true);
+		token.setUsedAt(LocalDateTime.now());
+		
+		tokenRepository.save(token);
 	}
 
 	public VerificationToken createToken(Member member, TokenType tokenType) {
@@ -59,9 +105,10 @@ public class TokenService {
 
 		String uuid = UUID.randomUUID().toString();
 
-		LocalDateTime expiryDate = (tokenType == TokenType.RESET_PASSWORD) ? LocalDateTime.now().plusMinutes(30) : LocalDateTime.now().plusHours(24);
-		
-		VerificationToken token = VerificationToken.builder().type(tokenType).token(uuid).member(member)
+		LocalDateTime expiryDate = (tokenType == TokenType.RESET_PASSWORD) ? LocalDateTime.now().plusMinutes(30)
+				: LocalDateTime.now().plusHours(24);
+
+		VerificationToken token = VerificationToken.builder().type(tokenType).token(uuid).member(member).used(false)
 				.expiryDate(expiryDate).build();
 
 		tokenRepository.save(token);

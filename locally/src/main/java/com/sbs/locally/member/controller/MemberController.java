@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sbs.locally.common.exception.DuplicateEmailException;
 import com.sbs.locally.common.exception.DuplicateNickNameException;
+import com.sbs.locally.member.entity.Member;
 import com.sbs.locally.member.forms.SignupForm;
 import com.sbs.locally.member.service.MemberService;
 
@@ -37,41 +38,40 @@ public class MemberController {
 	@PostMapping("/signup")
 	public String signup(@Valid @ModelAttribute SignupForm form, BindingResult bindingResult, Model model) {
 
-		
-			// 1. 기본적인 유효성 검증
-			if (bindingResult.hasErrors()) {
-				// model.addAttribute("errors", bindingResult.getAllErrors());
-				return "/member/signup";
-			}
+		// 1. 기본적인 유효성 검증
+		if (bindingResult.hasErrors()) {
+			// model.addAttribute("errors", bindingResult.getAllErrors());
+			return "/member/signup";
+		}
 
-			/* 2. 복잡한 유효성 검증 START */
+		/* 2. 복잡한 유효성 검증 START */
 
-			// 2-1 비밀번호 일치, 불일치
-			if (!form.getPassword1().equals(form.getPassword2())) {
+		// 2-1 비밀번호 일치, 불일치
+		if (!form.getPassword1().equals(form.getPassword2())) {
 
-				bindingResult.rejectValue("password1", "password.mismatch", "비밀번호가 일치하지 않습니다.");
-				bindingResult.rejectValue("password2", "password.mismatch", "비밀번호가 일치하지 않습니다.");
-			}
+			bindingResult.rejectValue("password1", "password.mismatch", "비밀번호가 일치하지 않습니다.");
+			bindingResult.rejectValue("password2", "password.mismatch", "비밀번호가 일치하지 않습니다.");
+		}
 
-			// 2-2 아이디 중복 확인
-			if (memberService.existsByEmail(form.getEmail())) {
+		// 2-2 아이디 중복 확인
+		if (memberService.existsByEmail(form.getEmail())) {
 
-				bindingResult.rejectValue("email", "email.duplicate", "이미 가입한 이메일입니다.");
-			}
+			bindingResult.rejectValue("email", "email.duplicate", "이미 가입한 이메일입니다.");
+		}
 
-			// 2-3 닉네임 중복 확인
-			if (memberService.existsByNickname(form.getNickname())) {
-				bindingResult.rejectValue("nickname", "nickname.duplicate", "이미 존재하는 닉네임입니다.");
-			}
+		// 2-3 닉네임 중복 확인
+		if (memberService.existsByNickname(form.getNickname())) {
+			bindingResult.rejectValue("nickname", "nickname.duplicate", "이미 존재하는 닉네임입니다.");
+		}
 
-			// 2-4 에러 유무 다시 확인
-			if (bindingResult.hasErrors()) {
-				return "/member/signup";
-			}
+		// 2-4 에러 유무 다시 확인
+		if (bindingResult.hasErrors()) {
+			return "/member/signup";
+		}
 
-			/* 2. 복잡한 유효성 검증 END */
+		/* 2. 복잡한 유효성 검증 END */
 
-			// 3. 회원 가입
+		// 3. 회원 가입
 		try {
 			memberService.signUp(form);
 		} catch (DuplicateEmailException e) {
@@ -90,7 +90,19 @@ public class MemberController {
 
 		return "redirect:/";
 	}
-	
+
 	/* ↑↑↑ 회원가입 관련 ↑↑↑ */
 
+	/**
+	 * 1. Member 객체 enabled = True 2. 토큰 만료!
+	 */
+	public void activateMember(Member member) {
+
+		// 2. 토큰 만료하기
+
+		// 1. Member enabled...
+		// memberService.activateMember(token);
+
+		// tokenService.unactivateToken(token);
+	}
 }

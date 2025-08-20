@@ -85,4 +85,14 @@ public class MemberService {
 		}
 		
 	}
+	
+	/**
+	 * 회원 가입 이메일을 클릭하면 회원의 로그인을 허용하게함! Enabled = true
+	 * */
+	@Transactional(readOnly = false)
+	public void activateMember(Member member) {
+		member.setEnabled(true);
+		
+		memberRepository.save(member);
+	}
 }
