@@ -13,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.sbs.locally.auth.handler.CustomAuthFailureHandler;
+import com.sbs.locally.auth.handler.CustomAuthenticationSuccessHandler;
 import com.sbs.locally.auth.service.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityConfig {
 
 	private final CustomUserDetailsService customUserDetailsService;
+	private final CustomAuthFailureHandler customAuthFailureHandler;
+	private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,6 +44,8 @@ public class SecurityConfig {
 					.loginPage("/auth/login")
 					.usernameParameter("email")
 					.defaultSuccessUrl("/", true)
+					// .successHandler(customAuthenticationSuccessHandler) // 
+					.failureHandler(customAuthFailureHandler)
 					.permitAll()
 					)
 			.logout((logout) -> logout
