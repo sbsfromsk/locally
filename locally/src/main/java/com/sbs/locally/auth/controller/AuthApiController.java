@@ -66,7 +66,7 @@ public class AuthApiController {
 		Optional<Member> member = memberService.findByEmail(email.getEmail());
 		
 		if (member.isEmpty() || member.get().getEnabled() == false) {
-			log.info("이메일 없음! or 이메일 미인증 상태!");
+			log.info("이메일 없음! or 이메일 미인증 상태!!");
 			return ResponseEntity.noContent().build();
 		}
 		
