@@ -1,5 +1,7 @@
 package com.sbs.locally.member.service;
 
+import java.util.Optional;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +40,11 @@ public class MemberService {
 	public boolean existsByNickname(String nickname) {
 		
 		return memberRepository.existsByNickname(nickname);
+	}
+	
+	public Optional<Member> findByEmail(String email) {
+		
+		return memberRepository.findByEmail(email);
 	}
 	
 	@Transactional

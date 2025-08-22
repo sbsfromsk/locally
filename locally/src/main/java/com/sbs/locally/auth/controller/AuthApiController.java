@@ -2,6 +2,7 @@ package com.sbs.locally.auth.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import com.sbs.locally.auth.service.AuthService;
 import com.sbs.locally.common.enums.TokenType;
 import com.sbs.locally.common.service.TokenService;
 import com.sbs.locally.email.service.EmailService;
+import com.sbs.locally.member.entity.Member;
+import com.sbs.locally.member.service.MemberService;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
@@ -32,7 +35,16 @@ public class AuthApiController {
 
 	private final AuthService authService;
 	private final TokenService tokenService;
-
+	private final MemberService memberService;
+	
+	/***
+	 * 비밀번호 초기화 이메일 보내기
+	 * 만약 Member가 없거나, enabled=false 일 경우, 메일 보내는 건 생략하고 바로 return.
+	 * @param email
+	 * @param bindingResult
+	 * @return
+	 * @throws MessagingException
+	 */
 	@PostMapping("/findPassword")
 	public ResponseEntity<?> findPassword(@Valid @RequestBody EmailRequestForm email, BindingResult bindingResult)
 			throws MessagingException {
@@ -48,7 +60,17 @@ public class AuthApiController {
 			log.info("움치치움치치");
 			return ResponseEntity.badRequest().body(errors);
 		}
-
+		
+		// 멤버 객체 가져와서, enabled 확인하기
+		
+		Optional<Member> member = memberService.findByEmail(email.getEmail());
+		
+		if (member.isEmpty() || member.get().getEnabled() == false) {
+			log.info("이메일 없음! or 이메일 미인증 상태!");
+			return ResponseEntity.noContent().build();
+		}
+		
+		
 		authService.sendResetPasswordEmail(email.getEmail(), TokenType.RESET_PASSWORD);
 
 		long end = System.currentTimeMillis();
