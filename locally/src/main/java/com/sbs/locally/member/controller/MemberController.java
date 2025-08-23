@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbs.locally.common.exception.DuplicateEmailException;
 import com.sbs.locally.common.exception.DuplicateNickNameException;
@@ -36,7 +37,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/signup")
-	public String signup(@Valid @ModelAttribute SignupForm form, BindingResult bindingResult, Model model) {
+	public String signup(@Valid @ModelAttribute SignupForm form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 
 		// 1. 기본적인 유효성 검증
 		if (bindingResult.hasErrors()) {
@@ -88,6 +89,9 @@ public class MemberController {
 			return "/member/signup";
 		}
 
+		// 4. 회원가입 완료 alert
+		redirectAttributes.addFlashAttribute("successMessage", "이메일 인증 후, 회원가입을 완료해주세요.");
+		
 		return "redirect:/";
 	}
 

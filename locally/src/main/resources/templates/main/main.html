@@ -7,6 +7,17 @@
 		<form sec:authorize="isAuthenticated" th:action="@{/auth/logout}" method="post">
 			<input type="submit" value="로그아웃">
 		</form>
-		
+
+		<script th:inline="javascript">
+			const successMessage = /*[[${successMessage}]]*/ null;
+			
+			console.log(successMessage);
+			
+			if (successMessage) {
+				alert(successMessage);
+			}
+		</script>
 	</div>
+	
+
 </html>

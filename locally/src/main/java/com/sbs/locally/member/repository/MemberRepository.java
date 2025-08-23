@@ -1,5 +1,6 @@
 package com.sbs.locally.member.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 	boolean existsByNickname(String nickname);
 	
 	Optional<Member> findByEmail(String email);
+
+	List<Member> findByEnabledFalse();
 
 }
