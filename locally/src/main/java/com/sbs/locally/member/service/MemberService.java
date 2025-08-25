@@ -102,4 +102,17 @@ public class MemberService {
 		
 		memberRepository.save(member);
 	}
+
+	@Transactional
+	public void resetPassword(Member member, String password1) {
+		// 1. 비밀번호 암호화
+		String encodedPassword = passwordEncoder.encode(password1);
+		
+		// 2. 비밀번호 설정
+		member.setPassword(encodedPassword);
+		
+		// 3. 비밀번호 저장
+		memberRepository.save(member);
+		
+	}
 }

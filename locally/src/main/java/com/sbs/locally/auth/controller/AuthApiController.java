@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sbs.locally.auth.forms.EmailRequestForm;
 import com.sbs.locally.auth.forms.ResetPasswordForm;
 import com.sbs.locally.auth.service.AuthService;
+import com.sbs.locally.common.entity.VerificationToken;
 import com.sbs.locally.common.enums.TokenType;
+import com.sbs.locally.common.exception.InvalidTokenException;
 import com.sbs.locally.common.service.TokenService;
 import com.sbs.locally.email.service.EmailService;
 import com.sbs.locally.member.entity.Member;
@@ -87,17 +89,10 @@ public class AuthApiController {
 		log.info("password: {}, {}", form.getPassword1(), form.getPassword2());
 
 		// 1. 토큰 검증
-		Boolean isValid = tokenService.isValidToken(form.getPasswordToken());
-		log.info("토큰 {}, 유효 여부: {}", form.getPasswordToken(), isValid);
+		VerificationToken token = tokenService.getToken(form.getPasswordToken());
+		log.info("토큰 {}, 유효 여부: {}", form.getPasswordToken(), token);
 
-		// 2. 토큰 유효하지 않는다면...?
-		// invalid-token으로 이동해야 함.
-		if (!isValid) {
-			log.info("유효 시간 지남!");
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "invalid_token"));
-		}
-
-		// 3. 비밀번호 검증
+		// 2. 비밀번호 검증
 		if (!form.getPassword1().equals(form.getPassword2())) {
 
 			log.info("여기 진행중!");
@@ -113,8 +108,11 @@ public class AuthApiController {
 			return ResponseEntity.badRequest().body(errors);
 		}
 
-		// 4. 비밀번호 변경 시작
-		authService.resetPassword(form.getPasswordToken(), form.getPassword1());
+		// 3. 비밀번호 변경 시작
+		memberService.resetPassword(token.getMember(), form.getPassword1());
+		
+		// 4. 토큰 만료!
+		tokenService.invalidToken(token);
 
 		return ResponseEntity.noContent().build();
 	}

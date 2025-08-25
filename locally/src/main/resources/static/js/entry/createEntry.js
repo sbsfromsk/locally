@@ -2,6 +2,7 @@ const uploadArea = document.getElementById('uploadArea');
 const previewArea = document.getElementById('previewArea');
 const imageBlock = document.getElementById('imageBlock');
 const fileInput = document.getElementById('fileInput');
+const entryDate = document.querySelector("#entryDate");
 
 
 uploadArea.addEventListener('click', function(event) {
@@ -81,3 +82,8 @@ slider.addEventListener('mousemove', e => {
 	console.log("x" + x);
 	slider.scrollLeft = scrollLeft - walk;
 	});
+	
+entryDate.addEventListener('click', e => {
+	const selectedDate = entryDate.value;
+	console.log(selectedDate);
+})

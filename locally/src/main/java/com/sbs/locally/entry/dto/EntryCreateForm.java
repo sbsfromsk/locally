@@ -1,4 +1,4 @@
-package com.sbs.locally.post.dto;
+package com.sbs.locally.entry.dto;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PostCreateForm {
+public class EntryCreateForm {
 
 	@NotEmpty(message = "제목을 입력해주세요.")
 	private String title;

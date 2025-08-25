@@ -1,4 +1,4 @@
-package com.sbs.locally.post.entity;
+package com.sbs.locally.entry.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.sbs.locally.post.enums.PostStatus;
+import com.sbs.locally.entry.enums.EntryStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Post {
+public class Entry {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,5 +43,5 @@ public class Post {
 	// private Long viewCount = 0L;
 	
 	@Enumerated(EnumType.STRING)
-	private PostStatus status;
+	private EntryStatus status;
 }

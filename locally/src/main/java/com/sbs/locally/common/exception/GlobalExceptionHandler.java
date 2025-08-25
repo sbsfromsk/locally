@@ -1,11 +1,15 @@
 package com.sbs.locally.common.exception;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
-@ControllerAdvice
+@ControllerAdvice(annotations = Controller.class)
+@Order(Ordered.LOWEST_PRECEDENCE)
 @Slf4j
 public class GlobalExceptionHandler {
 

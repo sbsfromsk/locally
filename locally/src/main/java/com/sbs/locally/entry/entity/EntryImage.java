@@ -1,4 +1,4 @@
-package com.sbs.locally.post.entity;
+package com.sbs.locally.entry.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class PostImage {
+public class EntryImage {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class PostImage {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
-	private Post post;
+	private Entry entry;
 	
 	@CreationTimestamp
 	private LocalDateTime uploadedAt;

@@ -1,0 +1,19 @@
+<html layout:decorate="~{layout}">
+		<div layout:fragment="content">
+			<link rel="stylesheet" type="text/css" th:href="@{/css/post.css}">
+			
+			<th:block th:each="entry : ${entries}">
+				<tr>
+					<td th:text="${entry.id}"></td>
+				</tr>
+			</th:block>
+			<th:block th:if="${entries.isEmpty()}">
+				<tr>
+					<td>일지를 작성해보세요.</td>
+				</tr>
+				<input type="button" value="일지작성" id="goToCreateEntry">
+			</th:block>
+		</div>
+		
+		<script layout:fragment="script" type='text/javascript' src="/js/entry/entryList.js"></script>
+</html>

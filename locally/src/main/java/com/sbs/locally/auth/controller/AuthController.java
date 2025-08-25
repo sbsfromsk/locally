@@ -78,7 +78,7 @@ public class AuthController {
 		// 1. 토큰 유효성 검사 후 멤버 가져오기...
 		log.info("토큰: {}", token);
 
-		VerificationToken verificationToken = tokenService.getTokenAndMember(token);
+		VerificationToken verificationToken = tokenService.getToken(token);
 		Member member = verificationToken.getMember();
 		
 		// 2. member enabled = true

@@ -66,19 +66,4 @@ public class AuthService {
 
 		}
 	}
-
-	/**
-	 * 비밀번호 설정 1. 토큰 유효 (TokenService) 2. 회원 찾기 (MemeberService) 3. 회원 비밀번호 바꾸기
-	 * (MemberService) 4. 토큰 만료!(uesdDate, used 체크)
-	 * TODO
-	 */
-	public void resetPassword(String passwordToken, String password) {
-
-		if (!tokenService.isValidToken(passwordToken)) {
-			throw new InvalidTokenException();
-		}
-		;
-	}
-
-
 }

@@ -30,7 +30,16 @@ public class TokenService {
 	 */
 	public boolean isValidToken(String token) {
 
-		return tokenRepository.findByToken(token).map(t -> !t.isExpired()).orElse(false);
+		/*
+		 * if (t.isExpired() || t.getUsed() || t.getUsedAt() != null) {
+				throw new InvalidTokenException();
+			}
+			
+			tokenRepository.findByToken(token).map(t -> {
+			
+			}
+		 * */
+		return tokenRepository.findByToken(token).map(t -> !t.isExpired() && !t.getUsed() && t.getUsedAt() == null).orElse(false);
 	}
 
 	/***
@@ -42,7 +51,7 @@ public class TokenService {
 	 * @param String token
 	 * @return Toekn 객체
 	 */
-	public VerificationToken getTokenAndMember(String token) {
+	public VerificationToken getToken(String token) {
 
 		return tokenRepository.findByToken(token).map(t -> {
 			/*

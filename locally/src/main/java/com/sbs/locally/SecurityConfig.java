@@ -43,7 +43,7 @@ public class SecurityConfig {
 			.formLogin((formLogin) -> formLogin
 					.loginPage("/auth/login")
 					.usernameParameter("email")
-					.defaultSuccessUrl("/", true)
+					.defaultSuccessUrl("/entry/myEntry", true)
 					// .successHandler(customAuthenticationSuccessHandler) // 
 					.failureHandler(customAuthFailureHandler)
 					.permitAll()
